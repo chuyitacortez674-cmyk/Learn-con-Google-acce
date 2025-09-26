@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LGA Inclusivo - Plataforma de Certificaciones Google Accesible</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .accessibility-focus:focus { outline: 3px solid #fbbf24; outline-offset: 2px; }
+        .screen-reader-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+        .course-card { transition: all 0.3s ease; }
+        .course-card:hover { transform: translateY(-4px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
+        .progress-bar { transition: width 0.8s ease-in-out; }
+    </style>
+</head>
+
+<body class="bg-gray-50" role="document">
+    <!-- Skip Navigation Link -->
+    <a href="#main-content" class="screen-reader-only accessibility-focus bg-blue-600 text-white p-2 absolute top-0 left-0 z-50">
+        Saltar al contenido principal
+    </a>
+
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg" role="navigation" aria-label="Navegación principal">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center" aria-hidden="true">
+                        <i class="fas fa-universal-access text-white"></i>
+                    </div>
+                    <h1 class="text-xl font-bold text-gray-800">LGA Inclusivo</h1>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <button id="loginBtn" class="accessibility-focus bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors" aria-describedby="login-description">
+                        <i class="fas fa-sign-in-alt mr-2" aria-hidden="true"></i>Iniciar Sesión
+                    </button>
+                    <span id="login-description" class="screen-reader-only">Acceder a tu cuenta de estudiante</span>
+                    
+                    <button id="registerBtn" class="accessibility-focus border border-blue-600 text-blue-600 hover:bg-blue-50 px-4 py-2 rounded-lg transition-colors">
+                        <i class="fas fa-user-plus mr-2" aria-hidden="true"></i>Registrarse
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main id="main-content" role="main">
+        <!-- Welcome Section -->
+        <section id="welcomeSection" class="gradient-bg text-white py-20" aria-labelledby="welcome-heading">
+            <div class="container mx-auto px-6 text-center">
+                <h2 id="welcome-heading" class="text-5xl font-bold mb-6">
+                    Certificaciones Google 100% Accesibles
+                </h2>
+                <p class="text-xl mb-8 max-w-3xl mx-auto">
+                    La primera plataforma que hace las certificaciones de Google completamente accesibles para personas con discapacidad. 
+                    Aprende, certifícate y transforma tu carrera profesional.
+                </p>
+                
+                <div class="bg-white text-gray-800 rounded-2xl p-8 max-w-4xl mx-auto mb-8">
+                    <div class="grid grid-cols-3 gap-8">
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-blue-600" aria-label="12 certificaciones disponibles">12</div>
+                            <div class="text-sm text-gray-600">Certificaciones Google</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-green-600" aria-label="240 horas de contenido">240h</div>
+                            <div class="text-sm text-gray-600">Contenido Inclusivo</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-purple-600" aria-label="Certificación WCAG 2.1 AA">WCAG 2.1</div>
+                            <div class="text-sm text-gray-600">Certificado AA</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <button id="startLearningBtn" class="accessibility-focus bg-green-500 hover:bg-green-600 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors">
+                    <i class="fas fa-rocket mr-2" aria-hidden="true"></i>Comenzar Ahora - Gratis
+                </button>
+            </div>
+        </section>
+
+        <!-- Dashboard Section (Hidden initially) -->
+        <section id="dashboardSection" class="py-20 bg-white hidden" aria-labelledby="dashboard-heading">
+            <div class="container mx-auto px-6">
+                <div class="flex justify-between items-center mb-8">
+                    <h2 id="dashboard-heading" class="text-3xl font-bold text-gray-800">Mi Dashboard</h2>
+                    <div class="flex items-center space-x-4">
+                        <span id="userWelcome" class="text-gray-600">Bienvenido/a, <span id="userName" class="font-semibold"></span></span>
+                        <button id="logoutBtn" class="accessibility-focus text-red-600 hover:text-red-700 transition-colors" aria-label="Cerrar sesión">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Progress Overview -->
+                <div class="grid grid-cols-4 gap-6 mb-12">
+                    <div class="bg-blue-50 rounded-xl p-6 text-center">
+                        <i class="fas fa-book-open text-blue-600 text-3xl mb-3" aria-hidden="true"></i>
+                        <div class="text-2xl font-bold text-blue-800" id="coursesStarted">3</div>
+                        <div class="text-sm text-blue-600">Cursos Iniciados</div>
+                    </div>
+                    <div class="bg-green-50 rounded-xl p-6 text-center">
+                        <i class="fas fa-certificate text-green-600 text-3xl mb-3" aria-hidden="true"></i>
+                        <div class="text-2xl font-bold text-green-800" id="coursesCompleted">1</div>
+                        <div class="text-sm text-green-600">Certificaciones Obtenidas</div>
+                    </div>
+                    <div class="bg-purple-50 rounded-xl p-6 text-center">
+                        <i class="fas fa-clock text-purple-600 text-3xl mb-3" aria-hidden="true"></i>
+                        <div class="text-2xl font-bold text-purple-800" id="hoursStudied">47h</div>
+                        <div class="text-sm text-purple-600">Horas de Estudio</div>
+                    </div>
+                    <div class="bg-orange-50 rounded-xl p-6 text-center">
+                        <i class="fas fa-trophy text-orange-600 text-3xl mb-3" aria-hidden="true"></i>
+                        <div class="text-2xl font-bold text-orange-800" id="achievementPoints">1,250</div>
+                        <div class="text-sm text-orange-600">Puntos de Logro</div>
+                    </div>
+                </div>
+
+                <!-- My Courses -->
+                <div class="mb-12">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6">Mis Cursos</h3>
+                    <div class="grid grid-cols-2 gap-6" id="myCourses">
+                        <!-- Courses will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Courses Section -->
+        <section id="coursesSection" class="py-20 bg-gray-50" aria-labelledby="courses-heading">
+            <div class="container mx-auto px-6">
+                <h2 id="courses-heading" class="text-4xl font-bold text-center mb-12">Certificaciones Disponibles</h2>
+                
+                <div class="grid grid-cols-3 gap-8" id="coursesList" role="list">
+                    <!-- Courses will be populated by JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Course Detail Modal -->
+        <div id="courseModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center" role="dialog" aria-labelledby="modal-title" aria-modal="true">
+            <div class="bg-white rounded-2xl max-w-4xl w-full mx-4 max-h-screen overflow-y-auto">
+                <div class="p-8">
+                    <div class="flex justify-between items-start mb-6">
+                        <h3 id="modal-title" class="text-2xl font-bold text-gray-800"></h3>
+                        <button id="closeModal" class="accessibility-focus text-gray-500 hover:text-gray-700 text-2xl" aria-label="Cerrar modal">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    
+                    <div id="modalContent">
+                        <!-- Content will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center" role="dialog" aria-labelledby="login-modal-title" aria-modal="true">
+        <div class="bg-white rounded-2xl max-w-md w-full mx-4">
+            <div class="p-8">
+                <h3 id="login-modal-title" class="text-2xl font-bold text-gray-800 mb-6 text-center">Iniciar Sesión</h3>
+                
+                <form id="loginForm" class="space-y-4">
+                    <div>
+                        <label for="loginEmail" class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                        <input type="email" id="loginEmail" name="email" required 
+                               class="accessibility-focus w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                               aria-describedby="email-help">
+                        <div id="email-help" class="text-xs text-gray-500 mt-1">Ingresa tu email registrado</div>
+                    </div>
+                    
+                    <div>
+                        <label for="loginPassword" class="block text-sm font-medium text-gray-700 mb-2">Contraseña</label>
+                        <input type="password" id="loginPassword" name="password" required 
+                               class="accessibility-focus w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                    
+                    <button type="submit" class="accessibility-focus w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-semibold transition-colors">
+                        Iniciar Sesión
+                    </button>
+                </form>
+                
+                <div class="mt-4 text-center">
+                    <button id="showRegisterForm" class="accessibility-focus text-blue-600 hover:text-blue-700 text-sm">
+                        ¿No tienes cuenta? Regístrate aquí
+                    </button>
+                </div>
+                
+                <button id="closeLoginModal" class="accessibility-focus absolute top-4 right-4 text-gray-500 hover:text-gray-700" aria-label="Cerrar modal de login">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div id="registerModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center" role="dialog" aria-labelledby="register-modal-title" aria-modal="true">
+        <div class="bg-white rounded-2xl max-w-md w-full mx-4">
+            <div class="p-8">
+                <h3 id="register-modal-title" class="text-2xl font-bold text-gray-800 mb-6 text-center">Crear Cuenta</h3>
+                
+                <form id="registerForm" class="space-y-4">
+                    <div>
+                        <label for="registerName" class="block text-sm font-medium text-gray-700 mb-2">Nombre Completo</label>
+                        <input type="text" id="registerName" name="name" required 
+                               class="accessibility-focus w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                    
+                    <div>
+                        <label for="registerEmail" class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                        <input type="email" id="registerEmail" name="email" required 
+                               class="accessibility-focus w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                    
+                    <div>
+                        <label for="registerPassword" class="block text-sm font-medium text-gray-700 mb-2">Contraseña</label>
+                        <input type="password" id="registerPassword" name="password" required 
+                               class="accessibility-focus w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                               aria-describedby="password-help">
+                        <div id="password-help" class="text-xs text-gray-500 mt-1">Mínimo 6 caracteres</div>
+                    </div>
+                    
+                    <div>
+                        <label class="flex items-start space-x-3">
+                            <input type="checkbox" id="accessibilityNeeds" name="accessibility" 
+                                   class="accessibility-focus mt-1 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                            <span class="text-sm text-gray-700">Tengo necesidades específicas de accesibilidad</span>
+                        </label>
+                    </div>
+                    
+                    <button type="submit" class="accessibility-focus w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-semibold transition-colors">
+                        Crear Cuenta Gratuita
+                    </button>
+                </form>
+                
+                <div class="mt-4 text-center">
+                    <button id="showLoginForm" class="accessibility-focus text-blue-600 hover:text-blue-700 text-sm">
+                        ¿Ya tienes cuenta? Inicia sesión
+                    </button>
+                </div>
+                
+                <button id="closeRegisterModal" class="accessibility-focus absolute top-4 right-4 text-gray-500 hover:text-gray-700" aria-label="Cerrar modal de registro">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Accessibility Toolbar -->
+    <div id="accessibilityToolbar" class="fixed bottom-4 right-4 bg-white rounded-lg shadow-lg p-4 border" role="toolbar" aria-label="Herramientas de accesibilidad">
+        <div class="flex flex-col space-y-2">
+            <button id="increaseFontSize" class="accessibility-focus p-2 text-gray-600 hover:text-blue-600 transition-colors" aria-label="Aumentar tamaño de fuente">
+                <i class="fas fa-plus"></i> A+
+            </button>
+            <button id="decreaseFontSize" class="accessibility-focus p-2 text-gray-600 hover:text-blue-600 transition-colors" aria-label="Disminuir tamaño de fuente">
+                <i class="fas fa-minus"></i> A-
+            </button>
+            <button id="toggleHighContrast" class="accessibility-focus p-2 text-gray-600 hover:text-blue-600 transition-colors" aria-label="Alternar alto contraste">
+                <i class="fas fa-adjust"></i>
+            </button>
+            <button id="toggleScreenReader" class="accessibility-focus p-2 text-gray-600 hover:text-blue-600 transition-colors" aria-label="Activar lector de pantalla">
+                <i class="fas fa-volume-up"></i>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Application State
+        let currentUser = null;
+        let isLoggedIn = false;
+        let fontSize = 16;
+        let highContrast = false;
+
+        // Course Data
+        const courses = [
+            {
+                id: 1,
+                title: "Google Analytics Accesible",
+                description: "Aprende a usar Google Analytics con herramientas de accesibilidad completas",
+                duration: "20 horas",
+                level: "Principiante",
+                progress: 0,
+                enrolled: false,
+                modules: 8,
+                certificate: true,
+                accessibility: ["Subtítulos", "Transcripciones", "Navegación por teclado", "Lector de pantalla"],
+                image: "fas fa-chart-line"
+            },
+            {
+                id: 2,
+                title: "Google Ads Inclusivo",
+                description: "Domina Google Ads con interfaces adaptadas para todas las capacidades",
+                duration: "25 horas",
+                level: "Intermedio",
+                progress: 0,
+                enrolled: false,
+                modules: 10,
+                certificate: true,
+                accessibility: ["Audio descriptivo", "Contraste alto", "Texto alternativo", "Zoom adaptativo"],
+                image: "fas fa-bullhorn"
+            },
+            {
+                id: 3,
+                title: "Google Cloud Accesible",
+                description: "Certificación en Google Cloud Platform con herramientas inclusivas",
+                duration: "35 horas",
+                level: "Avanzado",
+                progress: 0,
+                enrolled: false,
+                modules: 12,
+                certificate: true,
+                accessibility: ["Comandos de voz", "Braille", "Magnificación", "Navegación simplificada"],
+                image: "fas fa-cloud"
+            },
+            {
+                id: 4,
+                title: "Google Workspace Inclusivo",
+                description: "Productividad con Google Workspace adaptado para accesibilidad",
+                duration: "18 horas",
+                level: "Principiante",
+                progress: 65,
+                enrolled: true,
+                modules: 6,
+                certificate: true,
+                accessibility: ["Dictado por voz", "Atajos de teclado", "Modo oscuro", "Fuentes grandes"],
+                image: "fas fa-briefcase"
+            },
+            {
+                id: 5,
+                title: "Google Marketing Accesible",
+                description: "Marketing digital inclusivo con herramientas de Google",
+                duration: "22 horas",
+                level: "Intermedio",
+                progress: 30,
+                enrolled: true,
+                modules: 9,
+                certificate: true,
+                accessibility: ["Colores seguros", "Iconos descriptivos", "Texto claro", "Navegación consistente"],
+                image: "fas fa-rocket"
+            },
+            {
+                id: 6,
+                title: "Google Data Analytics Inclusivo",
+                description: "Análisis de datos con Google, completamente accesible",
+                duration: "28 horas",
+                level: "Avanzado",
+                progress: 100,
+                enrolled: true,
+                modules: 11,
+                certificate: true,
+                accessibility: ["Gráficos sonoros", "Tablas accesibles", "Exportación Braille", "Resúmenes de voz"],
+                image: "fas fa-database"
+            }
+        ];
+
+        // User Data (Simulated Database)
+        const users = [
+            {
+                id: 1,
+                name: "María González",
+                email: "maria@example.com",
+                password: "123456",
+                enrolledCourses: [4, 5, 6],
+                completedCourses: [6],
+                accessibilityNeeds: true
+            }
+        ];
+
+        // DOM Elements
+        const loginBtn = document.getElementById('loginBtn');
+        const registerBtn = document.getElementById('registerBtn');
+        const loginModal = document.getElementById('loginModal');
+        const registerModal = document.getElementById('registerModal');
+        const courseModal = document.getElementById('courseModal');
+        const welcomeSection = document.getElementById('welcomeSection');
+        const dashboardSection = document.getElementById('dashboardSection');
+        const coursesSection = document.getElementById('coursesSection');
+
+        // Initialize Application
+        document.addEventListener('DOMContentLoaded', function() {
+            renderCourses();
+            setupEventListeners();
+            setupAccessibilityFeatures();
+            
+            // Check if user is logged in (simulate session)
+            const savedUser = localStorage.getItem('currentUser');
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+                isLoggedIn = true;
+                showDashboard();
+            }
+        });
+
+        // Event Listeners
+        function setupEventListeners() {
+            // Login/Register buttons
+            loginBtn.addEventListener('click', () => showModal('loginModal'));
+            registerBtn.addEventListener('click', () => showModal('registerModal'));
+            
+            // Modal close buttons
+            document.getElementById('closeLoginModal').addEventListener('click', () => hideModal('loginModal'));
+            document.getElementById('closeRegisterModal').addEventListener('click', () => hideModal('registerModal'));
+            document.getElementById('closeModal').addEventListener('click', () => hideModal('courseModal'));
+            
+            // Form switches
+            document.getElementById('showRegisterForm').addEventListener('click', () => {
+                hideModal('loginModal');
+                showModal('registerModal');
+            });
+            
+            document.getElementById('showLoginForm').addEventListener('click', () => {
+                hideModal('registerModal');
+                showModal('loginModal');
+            });
+            
+            // Form submissions
+            document.getElementById('loginForm').addEventListener('submit', handleLogin);
+            document.getElementById('registerForm').addEventListener('submit', handleRegister);
+            
+            // Logout
+            document.getElementById('logoutBtn')?.addEventListener('click', handleLogout);
+            
+            // Start learning button
+            document.getElementById('startLearningBtn').addEventListener('click', () => {
+                if (isLoggedIn) {
+                    showDashboard();
+                } else {
+                    showModal('registerModal');
+                }
+            });
+            
+            // Close modals on outside click
+            window.addEventListener('click', (e) => {
+                if (e.target.classList.contains('fixed') && e.target.classList.contains('inset-0')) {
+                    hideModal('loginModal');
+                    hideModal('registerModal');
+                    hideModal('courseModal');
+                }
+            });
+            
+            // Keyboard navigation
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    hideModal('loginModal');
+                    hideModal('registerModal');
+                    hideModal('courseModal');
+                }
+            });
+        }
+
+        // Authentication Functions
+        function handleLogin(e) {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const email = formData.get('email');
+            const password = formData.get('password');
+            
+            // Simulate authentication
+            const user = users.find(u => u.email === email && u.password === password);
+            
+            if (user) {
+                currentUser = user;
+                isLoggedIn = true;
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                hideModal('loginModal');
+                showDashboard();
+                announceToScreenReader('Inicio de sesión exitoso. Bienvenido al dashboard.');
+            } else {
+                alert('Email o contraseña incorrectos. Intenta con: maria@example.com / 123456');
+            }
+        }
+
+        function handleRegister(e) {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const name = formData.get('name');
+            const email = formData.get('email');
+            const password = formData.get('password');
+            const accessibilityNeeds = formData.get('accessibility') === 'on';
+            
+            // Check if user already exists
+            if (users.find(u => u.email === email)) {
+                alert('Este email ya está registrado. Intenta iniciar sesión.');
+                return;
+            }
+            
+            // Create new user
+            const newUser = {
+                id: users.length + 1,
+                name,
+                email,
+                password,
+                enrolledCourses: [],
+                completedCourses: [],
+                accessibilityNeeds
+            };
+            
+            users.push(newUser);
+            currentUser = newUser;
+            isLoggedIn = true;
+            localStorage.setItem('currentUser', JSON.stringify(newUser));
+            
+            hideModal('registerModal');
+            showDashboard();
+            announceToScreenReader(`Cuenta creada exitosamente. Bienvenido ${name} al dashboard.`);
+        }
+
+        function handleLogout() {
+            currentUser = null;
+            isLoggedIn = false;
+            localStorage.removeItem('currentUser');
+            
+            // Show welcome section
+            welcomeSection.classList.remove('hidden');
+            dashboardSection.classList.add('hidden');
+            
+            // Update navigation
+            loginBtn.style.display = 'block';
+            registerBtn.style.display = 'block';
+            
+            announceToScreenReader('Sesión cerrada exitosamente.');
+        }
+
+        // Dashboard Functions
+        function showDashboard() {
+            welcomeSection.classList.add('hidden');
+            dashboardSection.classList.remove('hidden');
+            
+            // Update navigation
+            loginBtn.style.display = 'none';
+            registerBtn.style.display = 'none';
+            
+            // Update user info
+            document.getElementById('userName').textContent = currentUser.name;
+            
+            // Update stats
+            updateDashboardStats();
+            renderMyCourses();
+        }
+
+        function updateDashboardStats() {
+            const enrolledCourses = courses.filter(c => currentUser.enrolledCourses.includes(c.id));
+            const completedCourses = courses.filter(c => currentUser.completedCourses.includes(c.id));
+            const totalHours = enrolledCourses.reduce((sum, course) => {
+                return sum + (parseInt(course.duration) * (course.progress / 100));
+            }, 0);
+            
+            document.getElementById('coursesStarted').textContent = enrolledCourses.length;
+            document.getElementById('coursesCompleted').textContent = completedCourses.length;
+            document.getElementById('hoursStudied').textContent = Math.round(totalHours) + 'h';
+            document.getElementById('achievementPoints').textContent = (completedCourses.length * 500) + (enrolledCourses.length * 100);
+        }
+
+        function renderMyCourses() {
+            const myCoursesContainer = document.getElementById('myCourses');
+            const enrolledCourses = courses.filter(c => currentUser.enrolledCourses.includes(c.id));
+            
+            myCoursesContainer.innerHTML = enrolledCourses.map(course => `
+                <div class="bg-white rounded-xl p-6 shadow-lg course-card" role="listitem">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                                <i class="${course.image} text-blue-600 text-xl" aria-hidden="true"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-800">${course.title}</h4>
+                                <p class="text-sm text-gray-600">${course.duration} • ${course.modules} módulos</p>
+                            </div>
+                        </div>
+                        <span class="text-xs bg-${course.progress === 100 ? 'green' : 'blue'}-100 text-${course.progress === 100 ? 'green' : 'blue'}-800 px-2 py-1 rounded-full">
+                            ${course.progress === 100 ? 'Completado' : 'En progreso'}
+                        </span>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <div class="flex justify-between text-sm mb-1">
+                            <span>Progreso</span>
+                            <span>${course.progress}%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="progress-bar bg-blue-600 h-2 rounded-full" style="width: ${course.progress}%" 
+                                 role="progressbar" aria-valuenow="${course.progress}" aria-valuemin="0" aria-valuemax="100"
+                                 aria-label="Progreso del curso: ${course.progress} por ciento"></div>
+                        </div>
+                    </div>
+                    
+                    <button onclick="continueCourse(${course.id})" 
+                            class="accessibility-focus w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg transition-colors">
+                        ${course.progress === 100 ? 'Ver Certificado' : 'Continuar Curso'}
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        // Course Functions
+        function renderCourses() {
+            const coursesContainer = document.getElementById('coursesList');
+            
+            coursesContainer.innerHTML = courses.map(course => `
+                <div class="bg-white rounded-xl p-6 shadow-lg course-card" role="listitem">
+                    <div class="flex items-center space-x-4 mb-4">
+                        <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
+                            <i class="${course.image} text-white text-2xl" aria-hidden="true"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-xl font-bold text-gray-800 mb-1">${course.title}</h3>
+                            <div class="flex items-center space-x-4 text-sm text-gray-600">
+                                <span><i class="fas fa-clock mr-1" aria-hidden="true"></i>${course.duration}</span>
+                                <span><i class="fas fa-signal mr-1" aria-hidden="true"></i>${course.level}</span>
+                                <span><i class="fas fa-book mr-1" aria-hidden="true"></i>${course.modules} módulos</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <p class="text-gray-600 mb-4">${course.description}</p>
+                    
+                    <div class="mb-4">
+                        <h4 class="text-sm font-semibold text-gray-800 mb-2">Características de Accesibilidad:</h4>
+                        <div class="flex flex-wrap gap-1">
+                            ${course.accessibility.map(feature => `
+                                <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">${feature}</span>
+                            `).join('')}
+                        </div>
+                    </div>
+                    
+                    <div class="flex space-x-2">
+                        <button onclick="showCourseDetail(${course.id})" 
+                                class="accessibility-focus flex-1 border border-blue-600 text-blue-600 hover:bg-blue-50 py-2 px-4 rounded-lg transition-colors">
+                            Ver Detalles
+                        </button>
+                        <button onclick="enrollCourse(${course.id})" 
+                                class="accessibility-focus flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition-colors">
+                            ${course.enrolled ? 'Continuar' : 'Inscribirse'}
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function showCourseDetail(courseId) {
+            const course = courses.find(c => c.id === courseId);
+            if (!course) return;
+            
+            document.getElementById('modal-title').textContent = course.title;
+            document.getElementById('modalContent').innerHTML = `
+                <div class="space-y-6">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
+                            <i class="${course.image} text-white text-3xl" aria-hidden="true"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-2xl font-bold text-gray-800">${course.title}</h4>
+                            <div class="flex items-center space-x-4 text-gray-600 mt-2">
+                                <span><i class="fas fa-clock mr-1" aria-hidden="true"></i>${course.duration}</span>
+                                <span><i class="fas fa-signal mr-1" aria-hidden="true"></i>${course.level}</span>
+                                <span><i class="fas fa-book mr-1" aria-hidden="true"></i>${course.modules} módulos</span>
+                                ${course.certificate ? '<span><i class="fas fa-certificate mr-1" aria-hidden="true"></i>Certificado incluido</span>' : ''}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h5 class="text-lg font-semibold text-gray-800 mb-2">Descripción del Curso</h5>
+                        <p class="text-gray-600">${course.description}</p>
+                    </div>
+                    
+                    <div>
+                        <h5 class="text-lg font-semibold text-gray-800 mb-3">Características de Accesibilidad</h5>
+                        <div class="grid grid-cols-2 gap-3">
+                            ${course.accessibility.map(feature => `
+                                <div class="flex items-center space-x-2">
+                                    <i class="fas fa-check-circle text-green-600" aria-hidden="true"></i>
+                                    <span class="text-gray-700">${feature}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h5 class="text-lg font-semibold text-gray-800 mb-3">Contenido del Curso</h5>
+                        <div class="space-y-2">
+                            ${Array.from({length: course.modules}, (_, i) => `
+                                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                                            <span class="text-sm font-semibold text-blue-600">${i + 1}</span>
+                                        </div>
+                                        <span class="text-gray-700">Módulo ${i + 1}: Fundamentos ${i === 0 ? 'Básicos' : i === 1 ? 'Intermedios' : 'Avanzados'}</span>
+                                    </div>
+                                    <span class="text-sm text-gray-500">${Math.floor(Math.random() * 3) + 2}h</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                    
+                    <div class="flex space-x-4 pt-4">
+                        <button onclick="enrollCourse(${course.id}); hideModal('courseModal')" 
+                                class="accessibility-focus flex-1 bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-lg font-semibold transition-colors">
+                            ${course.enrolled ? 'Ir al Curso' : 'Inscribirse Ahora'}
+                        </button>
+                        <button onclick="hideModal('courseModal')" 
+                                class="accessibility-focus border border-gray-300 text-gray-700 hover:bg-gray-50 py-3 px-6 rounded-lg transition-colors">
+                            Cerrar
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            showModal('courseModal');
+        }
+
+        function enrollCourse(courseId) {
+            if (!isLoggedIn) {
+                showModal('loginModal');
+                return;
+            }
+            
+            const course = courses.find(c => c.id === courseId);
+            if (!course) return;
+            
+            if (!currentUser.enrolledCourses.includes(courseId)) {
+                currentUser.enrolledCourses.push(courseId);
+                course.enrolled = true;
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                
+                announceToScreenReader(`Te has inscrito exitosamente en ${course.title}`);
+                
+                // Update UI
+                renderCourses();
+                if (dashboardSection.classList.contains('hidden') === false) {
+                    updateDashboardStats();
+                    renderMyCourses();
+                }
+            }
+            
+            // Simulate starting course
+            showDashboard();
+        }
+
+        function continueCourse(courseId) {
+            const course = courses.find(c => c.id === courseId);
+            if (!course) return;
+            
+            if (course.progress === 100) {
+                // Show certificate
+                alert(`¡Felicitaciones! Has completado ${course.title}. Tu certificado está disponible para descarga.`);
+            } else {
+                // Continue course (simulate progress)
+                course.progress = Math.min(100, course.progress + 15);
+                updateDashboardStats();
+                renderMyCourses();
+                announceToScreenReader(`Continuando con ${course.title}. Progreso actual: ${course.progress}%`);
+            }
+        }
+
+        // Modal Functions
+        function showModal(modalId) {
+            document.getElementById(modalId).classList.remove('hidden');
+            // Focus management for accessibility
+            setTimeout(() => {
+                const firstInput = document.querySelector(`#${modalId} input, #${modalId} button`);
+                if (firstInput) firstInput.focus();
+            }, 100);
+        }
+
+        function hideModal(modalId) {
+            document.getElementById(modalId).classList.add('hidden');
+        }
+
+        // Accessibility Features
+        function setupAccessibilityFeatures() {
+            // Font size controls
+            document.getElementById('increaseFontSize').addEventListener('click', () => {
+                fontSize = Math.min(24, fontSize + 2);
+                document.body.style.fontSize = fontSize + 'px';
+                announceToScreenReader(`Tamaño de fuente aumentado a ${fontSize} píxeles`);
+            });
+            
+            document.getElementById('decreaseFontSize').addEventListener('click', () => {
+                fontSize = Math.max(12, fontSize - 2);
+                document.body.style.fontSize = fontSize + 'px';
+                announceToScreenReader(`Tamaño de fuente reducido a ${fontSize} píxeles`);
+            });
+            
+            // High contrast toggle
+            document.getElementById('toggleHighContrast').addEventListener('click', () => {
+                highContrast = !highContrast;
+                if (highContrast) {
+                    document.body.classList.add('high-contrast');
+                    document.body.style.filter = 'contrast(150%) brightness(120%)';
+                    announceToScreenReader('Modo de alto contraste activado');
+                } else {
+                    document.body.classList.remove('high-contrast');
+                    document.body.style.filter = 'none';
+                    announceToScreenReader('Modo de alto contraste desactivado');
+                }
+            });
+            
+            // Screen reader announcements
+            document.getElementById('toggleScreenReader').addEventListener('click', () => {
+                announceToScreenReader('Función de lector de pantalla activada. Esta plataforma es completamente compatible con lectores de pantalla como NVDA, JAWS y VoiceOver.');
+            });
+        }
+
+        // Screen Reader Support
+        function announceToScreenReader(message) {
+            const announcement = document.createElement('div');
+            announcement.setAttribute('aria-live', 'polite');
+            announcement.setAttribute('aria-atomic', 'true');
+            announcement.className = 'screen-reader-only';
+            announcement.textContent = message;
+            
+            document.body.appendChild(announcement);
+            
+            setTimeout(() => {
+                document.body.removeChild(announcement);
+            }, 1000);
+        }
+
+        // Keyboard Navigation Enhancement
+        document.addEventListener('keydown', (e) => {
+            // Alt + M for main menu
+            if (e.altKey && e.key === 'm') {
+                e.preventDefault();
+                document.querySelector('nav').focus();
+                announceToScreenReader('Navegando al menú principal');
+            }
+            
+            // Alt + C for courses
+            if (e.altKey && e.key === 'c') {
+                e.preventDefault();
+                document.getElementById('coursesSection').scrollIntoView();
+                announceToScreenReader('Navegando a la sección de cursos');
+            }
+            
+            // Alt + D for dashboard (if logged in)
+            if (e.altKey && e.key === 'd' && isLoggedIn) {
+                e.preventDefault();
+                showDashboard();
+                announceToScreenReader('Navegando al dashboard');
+            }
+        });
+
+        // Initialize progress bars animation
+        function animateProgressBars() {
+            const progressBars = document.querySelectorAll('.progress-bar');
+            progressBars.forEach(bar => {
+                const width = bar.style.width;
+                bar.style.width = '0%';
+                setTimeout(() => {
+                    bar.style.width = width;
+                }, 300);
+            });
+        }
+
+        // Call animation when dashboard is shown
+        const originalShowDashboard = showDashboard;
+        showDashboard = function() {
+            originalShowDashboard();
+            setTimeout(animateProgressBars, 500);
+        };
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98529a7a43922283',t:'MTc1ODg4ODA1My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
